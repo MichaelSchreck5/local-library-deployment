@@ -1,0 +1,38 @@
+{% extends "catalog/base.html" %}
+
+{% block content %}
+
+  <h1>Title: {{ book.title }}</h1>
+  {% if book.book_image %}
+    <img src="{{ book.book_image.url }}" alt="{{ book.title }}" style="max-width: 200px;">
+  {% endif %}
+
+  <p>
+    <strong>Author:</strong>
+    <a href="{% url 'author-detail' book.author.pk %}">
+      {{ book.author }}
+    </a>
+  </p>
+
+  <p><strong>Summary:</strong> {{ book.summary }}</p>
+
+  <p><strong>ISBN:</strong> {{ book.isbn }}</p>
+
+  <p>
+    <strong>Genre:</strong>
+    {% for genre in book.genre.all %}
+      {{ genre }}
+    {% endfor %}
+  </p>
+
+  <h2>Copies</h2>
+
+  {% for copy in book.bookinstance_set.all %}
+    <p>{{ copy.get_status_display }}</p>
+  {% empty %}
+    <p>No Copies Available</p>
+  {% endfor %}
+
+  <a href="{% url 'books' %}">Back</a>
+
+{% endblock %}
